@@ -49,7 +49,7 @@
                             </c:if>
                         </c:if>
 
-                        <c:if test="${r.processed_by eq null}  ">
+                        <c:if test="${r.processed_by eq null}">
                             <a href="review">Approved</a>
                             <a href="review">Rejected</a>
                             
