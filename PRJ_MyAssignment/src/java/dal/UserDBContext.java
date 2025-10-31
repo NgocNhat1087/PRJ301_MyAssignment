@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package dal;
 
 import java.util.ArrayList;
@@ -12,40 +11,40 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Employee;
 
-
-public class UserDBContext extends DBContext<User>{
+public class UserDBContext extends DBContext<User> {
 
     public User get(String username, String password) {
         try {
             String sql = """
                                      SELECT
-                                     u.uid,
-                                     u.username,
-                                     u.displayname,
-                                     e.eid,
-                                     e.ename  FROM [User] u
-                                     JOIN Enrollment en ON u.uid = en.uid
-                                     JOIN Employee e ON en.eid = e.eid
-                                     WHERE u.[username] = ? AND u.[password] = ?
-                                     AND active = 1""";
+                                                                          u.uid,
+                                                                          u.username,
+                                                                          u.displayname,
+                                                                          e.eid,
+                                                                          e.ename
+                                                                          FROM [User] u INNER JOIN [Enrollment] en ON u.[uid] = en.[uid]
+                                                                          \t\t\t\t\tINNER JOIN [Employee] e ON e.eid = en.eid
+                                                                          \t\t\t\t\tWHERE
+                                                                          \t\t\t\t\tu.username = ? AND u.[password] = ?
+                                                                          \t\t\t\t\tAND en.active = 1""";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setString(2, password);
-            
+
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 User u = new User();
                 Employee e = new Employee();
                 e.setName(rs.getString("ename"));
                 e.setId(rs.getInt("eid"));
                 u.setEmployee(e);
-                
+
                 u.setUsername(username);
                 u.setId(rs.getInt("uid"));
                 u.setDisplayname(rs.getString("displayname"));
-                
+
                 return u;
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,7 +53,7 @@ public class UserDBContext extends DBContext<User>{
         }
         return null;
     }
-    
+
     @Override
     public ArrayList<User> list() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
