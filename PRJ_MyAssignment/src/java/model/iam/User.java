@@ -17,6 +17,16 @@ public class User extends BaseModel {
     private Employee employee;
     private ArrayList<Role> roles = new ArrayList<>();
 
+    public User() {
+    }
+
+    public User(String username, String password, String displayname, Employee employee) {
+        this.username = username;
+        this.password = password;
+        this.displayname = displayname;
+        this.employee = employee;
+    }
+
     public Employee getEmployee() {
         return employee;
     }
