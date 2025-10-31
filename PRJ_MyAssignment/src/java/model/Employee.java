@@ -6,20 +6,14 @@
 package model;
 
 
-public class Employee {
+public class Employee extends BaseModel{
     private String name;
     private Department dept;
     private Employee supervisor;
     private String email;
     private String phone;
 
-    public Employee(String name, Department dept, Employee supervisor, String email, String phone) {
-        this.name = name;
-        this.dept = dept;
-        this.supervisor = supervisor;
-        this.email = email;
-        this.phone = phone;
-    }
+ 
 
     public Employee() {
     }
