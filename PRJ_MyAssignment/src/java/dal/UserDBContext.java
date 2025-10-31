@@ -41,7 +41,7 @@ public class UserDBContext extends DBContext<User>{
                 u.setEmployee(e);
                 
                 u.setUsername(username);
-                u.setPassword(password);
+                u.setId(rs.getInt("uid"));
                 u.setDisplayname(rs.getString("displayname"));
                 
                 return u;
