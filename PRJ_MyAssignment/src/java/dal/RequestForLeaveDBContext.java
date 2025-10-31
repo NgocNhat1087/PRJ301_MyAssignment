@@ -43,6 +43,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
                                  \t\t\tLEFT JOIN Employee p ON p.eid = r.processed_by""";
             
             PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, eid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 RequestForLeave rfl = new RequestForLeave();
@@ -52,6 +53,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
                 created_by.setName(rs.getString("created_name"));
                 rfl.setCreated_by(created_by);
                 
+                rfl.setId(rs.getInt("rid"));
                 rfl.setCreated_time(rs.getTimestamp("created_time"));
                 rfl.setFrom(rs.getDate("from"));
                 rfl.setTo(rs.getDate("to"));
@@ -61,7 +63,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
                 int processed_by_id = rs.getInt("processed_by");
                 if (processed_by_id!=0) {
                     Employee processed_by = new Employee();
-                    processed_by.setId(processed_by_id);
+                    processed_by.setId(rs.getInt("processed_by"));
                     processed_by.setName(rs.getString("processed_name"));
                     rfl.setProcessed_by(processed_by);
                 }
