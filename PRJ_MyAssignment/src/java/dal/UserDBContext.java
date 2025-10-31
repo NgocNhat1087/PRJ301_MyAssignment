@@ -26,7 +26,7 @@ public class UserDBContext extends DBContext<User>{
                                      e.ename  FROM [User] u
                                      JOIN Enrollment en ON u.uid = en.uid
                                      JOIN Employee e ON en.eid = e.eid
-                                     WHERE u.username = ? AND password = ?
+                                     WHERE u.[username] = ? AND u.[password] = ?
                                      AND active = 1""";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
