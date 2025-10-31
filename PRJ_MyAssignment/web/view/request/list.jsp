@@ -39,7 +39,7 @@
                           r.status eq 1?"approved":"rejected"}
                     </td>
                     <td>
-                        <c:if test="${r.processed_by.id ne null}  ">
+                        <c:if test="${r.processed_by ne null}">
                             ${r.processed_by.name}, you can change it to
                             <c:if test="${r.status eq 1}">
                                 <a href="review">Rejected</a>
@@ -49,7 +49,7 @@
                             </c:if>
                         </c:if>
 
-                        <c:if test="${r.processed_by.id eq null}  ">
+                        <c:if test="${r.processed_by eq null}  ">
                             <a href="review">Approved</a>
                             <a href="review">Rejected</a>
                             
