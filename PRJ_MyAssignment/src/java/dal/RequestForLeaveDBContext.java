@@ -196,7 +196,33 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
         
         
     }
-
+    
+ 
+    public void updateStatus(RequestForLeave model) {
+        try {
+            String sql = """
+                         UPDATE [RequestForLeave]
+                            SET 
+                               [status] = ?
+                               ,[processed_by] = ?
+                          WHERE rid = ?""";
+            
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, model.getStatus());
+            stm.setInt(2, model.getProcessed_by().getId());
+            stm.setInt(3, model.getId());
+           
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            closeConnection();
+        }
+                  
+    }
+    
     @Override
     public void update(RequestForLeave model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
