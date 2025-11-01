@@ -90,7 +90,71 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
 
     @Override
     public void insert(RequestForLeave model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        
+        try {
+            //begin transaction
+            connection.setAutoCommit(false);
+            //insert employee
+            String sql_insert_request = """
+                                        INSERT INTO [RequestForLeave]
+                                                   ([created_by]
+                                                   ,[created_time]
+                                                   ,[from]
+                                                   ,[to]
+                                                   ,[reason]
+                                                   ,[status]
+                                                   )
+                                             VALUES
+                                                   (?
+                                                   ,?
+                                                   ,?
+                                                   ,?
+                                                   ,?
+                                                   ,0
+                                                 """;
+            
+            
+            
+            PreparedStatement stm = connection.prepareStatement(sql_insert_request);
+            stm.setInt(1, model.getCreated_by().getId());
+            model.setCreated_time(new java.util.Date());
+            stm.setTimestamp(2, new java.sql.Timestamp(model.getCreated_time().getTime()));
+            stm.setDate(3, model.getFrom());
+            stm.setDate(4, model.getTo());
+            stm.setString(5, model.getReason());
+            stm.executeUpdate();
+            
+            
+           
+            //get eid
+
+            String sql_select_rid = "SELECT @@IDENTITY as rid";
+            PreparedStatement stm_select_rid = connection.prepareStatement(sql_select_rid);
+            ResultSet rs = stm_select_rid.executeQuery();
+            if (rs.next()) {
+                model.setId(rs.getInt("rid"));
+            }
+            //commit transaction
+            connection.commit();
+        } catch (SQLException ex) {
+            try {
+                //rollback transaction
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            closeConnection();
+        }
+        
+        
     }
 
     @Override
