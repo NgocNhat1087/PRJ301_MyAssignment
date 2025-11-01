@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import model.Employee;
 import model.RequestForLeave;
 import model.iam.User;
 
@@ -23,6 +24,23 @@ public class ReviewController extends BaseRequiredAuthorizationController {
 
     @Override
     protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        RequestForLeave rfl = new RequestForLeave();
+        int rid = Integer.parseInt(req.getParameter("rid"));
+        String action = req.getParameter("action");
+        int status = 0;
+        Employee reviewer = user.getEmployee();
+        RequestForLeaveDBContext db = new RequestForLeaveDBContext();
+        if (action.equals("approve")) {
+            status = 1;
+            
+        } else if (action.equals("reject")) {
+            status = 2;
+        }
+        rfl.setId(rid);
+        rfl.setStatus(status);
+        rfl.setProcessed_by(reviewer);
+        db.updateStatus(rfl);
+        resp.sendRedirect("list"); // quay lại trang danh sách
     }
 
     @Override
