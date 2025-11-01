@@ -18,23 +18,24 @@
                 <h2>Modify Request for Leave</h2>
 
                 <form action="modify" method="post">
-                    <input type="hidden" name="rid" value="${r.rid}"/>
-
+                    <input type="hidden" name="id" value="${r.id}"/>
+                <br/>
                 <label>Created By:</label>
-                <input type="text" value="${r.created_by.displayname}" readonly/>
-
+                <input type="text" value="${r.created_by.name}" readonly/>
+                <br/>
                 <label>Created Time:</label>
                 <input type="text" value="${r.created_time}" readonly/>
-
+                <br/>
                 <label>From Date:</label>
                 <input type="date" name="from" value="${r.from}"/>
-
+                <br/>
                 <label>To Date:</label>
                 <input type="date" name="to" value="${r.to}"/>
-
+                <br/>
                 <label>Reason:</label>
-                <textarea name="reason" rows="4">${r.reason}</textarea>
-
+                <input type="text" name ="reason" value="${r.reason}"/>
+                
+                <br/>
                 <div class="btn">
                     <input type="submit" value="Update Request"/>
                     <a href="list" class="button">Cancel</a>

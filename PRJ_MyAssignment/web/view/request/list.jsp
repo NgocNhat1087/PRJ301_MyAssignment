@@ -23,6 +23,7 @@
                     <th>Reason</th>
                     <th>Status</th>
                     <th>Processed By</th>
+                    <th>Modify</th>
 
 
                 </tr>
@@ -52,7 +53,14 @@
                         <c:if test="${r.processed_by eq null}">
                             <a href="review?id=${r.id}">Approved</a>
                             <a href="review?id=${r.id}">Rejected</a>
-                            
+
+                        </c:if>
+                    </td>
+                    <td>
+                        <c:if test="${r.status eq 0 
+                                      && r.processed_by eq null 
+                                      && r.created_by.id eq auth.employee.id}">
+                              <a href="modify?id=${r.id}">Modify</a>
                         </c:if>
                     </td>
                 </tr>
