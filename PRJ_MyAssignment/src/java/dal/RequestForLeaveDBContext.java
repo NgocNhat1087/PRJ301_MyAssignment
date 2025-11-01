@@ -10,6 +10,7 @@ import model.RequestForLeave;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Department;
 import model.Employee;
 
 
@@ -85,7 +86,45 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
 
     @Override
     public RequestForLeave get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String sql = """
+                         SELECT [rid]
+                               ,[created_by]
+                               ,[created_time]
+                               ,[from]
+                               ,[to]
+                               ,[reason]
+                               ,[status]
+                               ,[processed_by]
+                           FROM [RequestForLeave]
+                           WHERE [rid] = ?""";
+            
+            
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                RequestForLeave rfl = new RequestForLeave();
+                rfl.setId(rs.getInt("rid"));
+                rfl.setFrom(rs.getDate("from"));
+                rfl.setTo(rs.getDate("to"));
+                rfl.setReason(rs.getString("reason"));
+                rfl.setStatus(rs.getInt("status"));
+                Employee e = new Employee();
+                e.setId(rs.getInt("processed_by"));
+                
+                rfl.setProcessed_by(e);
+                
+                
+                return rfl;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        return null;
     }
 
     @Override
