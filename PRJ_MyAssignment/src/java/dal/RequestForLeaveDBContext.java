@@ -111,7 +111,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
                                                    ,?
                                                    ,?
                                                    ,?
-                                                   ,0
+                                                   ,0)
                                                  """;
             
             
@@ -129,7 +129,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
            
             //get eid
 
-            String sql_select_rid = "SELECT @@IDENTITY as rid";
+            String sql_select_rid = "SELECT SCOPE_IDENTITY() as rid";
             PreparedStatement stm_select_rid = connection.prepareStatement(sql_select_rid);
             ResultSet rs = stm_select_rid.executeQuery();
             if (rs.next()) {
