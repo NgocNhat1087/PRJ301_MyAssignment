@@ -14,7 +14,7 @@ import java.io.IOException;
 import model.iam.User;
 
 @WebServlet(urlPatterns = "/request/modifine")
-public class ModifineController extends BaseRequiredAuthorizationController{
+public class ModifyController extends BaseRequiredAuthorizationController{
 
     @Override
     protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
