@@ -21,10 +21,12 @@ public class CreateController extends BaseRequiredAuthorizationController {
 
     @Override
     protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+    
     }
 
     @Override
     protected void processGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        req.getRequestDispatcher("../view/request/create.jsp").forward(req, resp);
     }
     
 }
