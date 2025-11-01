@@ -34,12 +34,12 @@
                 <br/>
                 <label>Reason:</label>
                 <input type="text" name ="reason" value="${r.reason}"/>
-                
+
                 <br/>
-                <div class="btn">
-                    <input type="submit" value="Update Request"/>
-                    <a href="list" class="button">Cancel</a>
-                </div>
+
+                <input type="submit" value="Update Request"/>
+                <a href="list" class="button">Cancel</a>
+
             </form>
         </div>
     </body>
