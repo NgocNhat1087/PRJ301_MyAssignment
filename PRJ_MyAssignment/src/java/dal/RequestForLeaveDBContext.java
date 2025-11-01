@@ -90,13 +90,15 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
             String sql = """
                          SELECT [rid]
                                ,[created_by]
+                               ,e.ename AS [created_name]
                                ,[created_time]
                                ,[from]
                                ,[to]
                                ,[reason]
                                ,[status]
                                ,[processed_by]
-                           FROM [RequestForLeave]
+                           FROM [RequestForLeave] r
+                           JOIN [Employee] e ON r.created_by = e.eid
                            WHERE [rid] = ?""";
             
             
@@ -105,8 +107,14 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 RequestForLeave rfl = new RequestForLeave();
+                Employee created_by  = new Employee();
+                created_by.setId(rs.getInt("created_by"));
+                created_by.setName(rs.getString("created_name"));
+                rfl.setCreated_by(created_by);
+                
                 rfl.setId(rs.getInt("rid"));
                 rfl.setFrom(rs.getDate("from"));
+                
                 rfl.setTo(rs.getDate("to"));
                 rfl.setReason(rs.getString("reason"));
                 rfl.setStatus(rs.getInt("status"));
