@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package dal;
 
 import java.util.ArrayList;
@@ -13,13 +12,12 @@ import java.util.logging.Logger;
 import model.Department;
 import model.Employee;
 
+public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
 
-public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
-    
     public ArrayList<RequestForLeave> getByEmployeeAndSubodiaries(int eid) {
         ArrayList<RequestForLeave> rfls = new ArrayList<>();
         try {
-            
+
             String sql = """
                                  WITH Org AS (
                                  \t-- get current employee - eid = @eid
@@ -42,27 +40,27 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
                                  \t  ,p.ename as [processed_name]
                                  FROM Org e INNER JOIN [RequestForLeave] r ON e.eid = r.created_by
                                  \t\t\tLEFT JOIN Employee p ON p.eid = r.processed_by""";
-            
+
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, eid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 RequestForLeave rfl = new RequestForLeave();
-                
+
                 Employee created_by = new Employee();
                 created_by.setId(rs.getInt("created_by"));
                 created_by.setName(rs.getString("created_name"));
                 rfl.setCreated_by(created_by);
-                
+
                 rfl.setId(rs.getInt("rid"));
                 rfl.setCreated_time(rs.getTimestamp("created_time"));
                 rfl.setFrom(rs.getDate("from"));
                 rfl.setTo(rs.getDate("to"));
                 rfl.setReason(rs.getString("reason"));
                 rfl.setStatus(rs.getInt("status"));
-                
+
                 int processed_by_id = rs.getInt("processed_by");
-                if (processed_by_id!=0) {
+                if (processed_by_id != 0) {
                     Employee processed_by = new Employee();
                     processed_by.setId(rs.getInt("processed_by"));
                     processed_by.setName(rs.getString("processed_name"));
@@ -76,7 +74,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
             closeConnection();
         }
         return rfls;
-                
+
     }
 
     @Override
@@ -100,30 +98,28 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
                            FROM [RequestForLeave] r
                            JOIN [Employee] e ON r.created_by = e.eid
                            WHERE [rid] = ?""";
-            
-            
+
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 RequestForLeave rfl = new RequestForLeave();
-                Employee created_by  = new Employee();
+                Employee created_by = new Employee();
                 created_by.setId(rs.getInt("created_by"));
                 created_by.setName(rs.getString("created_name"));
                 rfl.setCreated_by(created_by);
-                
+
                 rfl.setId(rs.getInt("rid"));
                 rfl.setFrom(rs.getDate("from"));
-                
+
                 rfl.setTo(rs.getDate("to"));
                 rfl.setReason(rs.getString("reason"));
                 rfl.setStatus(rs.getInt("status"));
                 Employee e = new Employee();
                 e.setId(rs.getInt("processed_by"));
-                
+
                 rfl.setProcessed_by(e);
-                
-                
+
                 return rfl;
             }
 
@@ -137,8 +133,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
 
     @Override
     public void insert(RequestForLeave model) {
-        
-        
+
         try {
             //begin transaction
             connection.setAutoCommit(false);
@@ -160,9 +155,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
                                                    ,?
                                                    ,0)
                                                  """;
-            
-            
-            
+
             PreparedStatement stm = connection.prepareStatement(sql_insert_request);
             stm.setInt(1, model.getCreated_by().getId());
             model.setCreated_time(new java.util.Date());
@@ -171,11 +164,8 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
             stm.setDate(4, model.getTo());
             stm.setString(5, model.getReason());
             stm.executeUpdate();
-            
-            
-           
-            //get eid
 
+            //get eid
             String sql_select_rid = "SELECT SCOPE_IDENTITY() as rid";
             PreparedStatement stm_select_rid = connection.prepareStatement(sql_select_rid);
             ResultSet rs = stm_select_rid.executeQuery();
@@ -200,12 +190,9 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
             }
             closeConnection();
         }
-        
-        
-        
+
     }
-    
- 
+
     public void updateStatus(RequestForLeave model) {
         try {
             String sql = """
@@ -214,23 +201,24 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave>{
                                [status] = ?
                                ,[processed_by] = ?
                           WHERE rid = ?""";
-            
+
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, model.getStatus());
+            
+            
             stm.setInt(2, model.getProcessed_by().getId());
+            
             stm.setInt(3, model.getId());
-           
+
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
+        } finally {
             closeConnection();
         }
-                  
+
     }
-    
+
     @Override
     public void update(RequestForLeave model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
