@@ -22,7 +22,8 @@ public class ModifyController extends BaseRequiredAuthorizationController {
     protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         RequestForLeaveDBContext db = new RequestForLeaveDBContext();
-        RequestForLeave r = db.get(id);
+        RequestForLeave r = new RequestForLeave();
+        
 
 //        //  Chỉ cho phép người tạo đơn sửa chính đơn của mình, và đơn còn processing
 //        boolean isOwner = r.getCreated_by().getId() == (user.getEmployee().getId());
@@ -37,6 +38,7 @@ public class ModifyController extends BaseRequiredAuthorizationController {
         r.setFrom(Date.valueOf(req.getParameter("from")));
         r.setTo(Date.valueOf(req.getParameter("to")));
         r.setReason(req.getParameter("reason"));
+        r.setId(id);
         
         db.update(r);
 
