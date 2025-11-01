@@ -223,11 +223,10 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
         try {
             String sql = """
             UPDATE RequestForLeave
-            SET [from] = ?, [to] = ?, [reason] = ?
-            WHERE rid = ?
-              
-               
-        """;
+            SET [from] = ?
+                         , [to] = ?
+                         , [reason] = ?
+            WHERE [rid] = ?""";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setDate(1, model.getFrom());
             stm.setDate(2, model.getTo());
