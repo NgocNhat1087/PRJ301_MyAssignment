@@ -20,16 +20,18 @@
         <form action="create" method="post">
             <label>From: </label>
             <input type="date" name="from" required>
-
+            <br/>
             <label>To: </label>
             <input type="date" name="to" required>
-
+            <br/>
             <label>Reason:</label>
             <textarea name="reason" required></textarea>
-
+            <br/>
             <input type="submit" value="Submit"/>
         </form>
-
+        <c:if test="${not empty msg}">
+            <div class="msg">${msg}</div>
+        </c:if>
         
     </body>
 </html>
