@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package controller.employee;
+package controller.department;
 
 import controller.iam.BaseRequiredAuthorizationController;
 import jakarta.servlet.ServletException;
@@ -13,18 +13,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import model.iam.User;
 
-@WebServlet(urlPatterns = "/employee/create")
-public class CreateController extends BaseRequiredAuthorizationController{
+@WebServlet(urlPatterns = "/department/list")
+public class ListController extends BaseRequiredAuthorizationController{
 
     @Override
     protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-    
     }
-    
 
     @Override
     protected void processGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-
     }
 
 }

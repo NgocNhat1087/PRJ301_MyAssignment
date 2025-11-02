@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package controller.employee;
+package controller.department;
 
+import controller.employee.*;
 import controller.iam.BaseRequiredAuthorizationController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,18 +14,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import model.iam.User;
 
-@WebServlet(urlPatterns = "/employee/create")
-public class CreateController extends BaseRequiredAuthorizationController{
+@WebServlet(urlPatterns = "/department/edit")
+public class UpdateController extends BaseRequiredAuthorizationController{
 
     @Override
     protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-    
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
 
     @Override
     protected void processGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

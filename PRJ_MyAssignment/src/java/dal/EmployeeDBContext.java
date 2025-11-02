@@ -78,17 +78,73 @@ public class EmployeeDBContext extends DBContext<Employee>{
 
     @Override
     public void insert(Employee model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String sql = """
+                         INSERT INTO Employee (ename, supervisorid)
+                         VALUES (?, ?)
+                         """;
+            PreparedStatement stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stm.setString(1, model.getName());
+            if (model.getSupervisor() != null) {
+                stm.setInt(2, model.getSupervisor().getId());
+            } else {
+                stm.setNull(2, Types.INTEGER);
+            }
+            stm.executeUpdate();
+
+            // Lấy ID tự sinh
+            ResultSet rs = stm.getGeneratedKeys();
+            if (rs.next()) {
+                model.setId(rs.getInt(1));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
     }
 
     @Override
     public void update(Employee model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String sql = """
+                         UPDATE Employee
+                         SET ename = ?, supervisorid = ?
+                         WHERE eid = ?
+                         """;
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, model.getName());
+            if (model.getSupervisor() != null) {
+                stm.setInt(2, model.getSupervisor().getId());
+            } else {
+                stm.setNull(2, Types.INTEGER);
+            }
+            stm.setInt(3, model.getId());
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
     }
 
     @Override
     public void delete(Employee model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String sql = """
+                         DELETE FROM Employee
+                         WHERE eid = ?
+                         """;
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, model.getId());
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
     }
 
 }

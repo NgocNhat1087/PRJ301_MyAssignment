@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package controller.employee;
+package controller.department;
 
+import controller.employee.*;
 import controller.iam.BaseRequiredAuthorizationController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import model.iam.User;
 
-@WebServlet(urlPatterns = "/employee/create")
+@WebServlet(urlPatterns = "/department/create")
 public class CreateController extends BaseRequiredAuthorizationController{
 
     @Override
