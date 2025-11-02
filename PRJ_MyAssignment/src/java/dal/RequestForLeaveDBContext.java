@@ -7,9 +7,10 @@ package dal;
 import java.util.ArrayList;
 import model.RequestForLeave;
 import java.sql.*;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Department;
+
 import model.Employee;
 
 public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
@@ -232,7 +233,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
             stm.setDate(2, model.getTo());
             stm.setString(3, model.getReason());
             stm.setInt(4, model.getId());
-           
+
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -246,4 +247,35 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    public HashMap<Integer, ArrayList<RequestForLeave>> getRequestsInRange(Date from, Date to) {
+        HashMap<Integer, ArrayList<RequestForLeave>> map = new HashMap<>();
+        try {
+            String sql = """
+            SELECT rid, created_by, [from], [to], [status]
+            FROM RequestForLeave
+            WHERE [status] = 1
+            AND [from] <= ? AND [to] >= ?
+        """;
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, to);
+            stm.setDate(2, from);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                RequestForLeave r = new RequestForLeave();
+                r.setId(rs.getInt("rid"));
+                r.setFrom(rs.getDate("from"));
+                r.setTo(rs.getDate("to"));
+                r.setStatus(rs.getInt("status"));
+
+                int empId = rs.getInt("created_by");
+                map.computeIfAbsent(empId, k -> new ArrayList<>()).add(r);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        return map;
+    }
 }
