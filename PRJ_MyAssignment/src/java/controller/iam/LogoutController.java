@@ -5,7 +5,29 @@
 
 package controller.iam;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import model.iam.User;
 
-public class LogoutController {
+@WebServlet(urlPatterns = "/logout")
+public class LogoutController extends BaseRequiredAuthorizationController{
+
+    @Override
+    protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    protected void processGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        // Xóa session hiện tại (đăng xuất)
+        req.getSession().invalidate();
+
+        // Chuyển hướng về trang đăng nhập (login.jsp)
+        resp.sendRedirect("login");
+    }
+    
 
 }
