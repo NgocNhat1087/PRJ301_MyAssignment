@@ -13,15 +13,16 @@ import java.io.IOException;
 import model.iam.User;
 
 @WebServlet(urlPatterns = "/logout")
-public class LogoutController extends BaseRequiredAuthorizationController{
+public class LogoutController extends BaseRequiredAuthenticationController{
+
+   
 
     @Override
-    protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
     }
 
     @Override
-    protected void processGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
         // Xóa session hiện tại (đăng xuất)
         req.getSession().invalidate();
 
