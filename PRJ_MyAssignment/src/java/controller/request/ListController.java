@@ -35,9 +35,10 @@ public class ListController extends BaseRequiredAuthorizationController {
 
         RequestForLeaveDBContext db = new RequestForLeaveDBContext();
         ArrayList<RequestForLeave> rfls = db.list(eid, pageindex, pagesize);
+        db = new RequestForLeaveDBContext();
         int totalRecords = db.count(eid);
         int totalPages = (totalRecords % pagesize ==0)?totalRecords/pagesize:totalRecords/pagesize +1;
-
+        
         req.setAttribute("rfls", rfls);
         req.setAttribute("pageindex", pageindex);
         req.setAttribute("totalPages", totalPages);

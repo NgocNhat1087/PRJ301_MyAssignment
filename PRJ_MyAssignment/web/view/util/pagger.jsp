@@ -14,7 +14,7 @@
     <body>
         <form action="${requestScope.action}" method="${requestScope.method}">
             Page: <input type="text" name="page" value="${requestScope.pageindex}"/> / ${requestScope.totalPages}
-            ${requestScope.totalPages}
+            
             <input type="submit"  value="View"/>
         </form>
     </body>

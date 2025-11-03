@@ -333,7 +333,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
             )
             SELECT COUNT(*) AS total
             FROM Org e
-            INNER JOIN RequestForLeave r ON e.eid = r.created_by;
+            INNER JOIN RequestForLeave r ON e.eid = r.created_by
         """;
 
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -343,8 +343,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
                 total = rs.getInt("total");
             }
 
-            rs.close();
-            stm.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
