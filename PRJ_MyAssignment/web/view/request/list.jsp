@@ -23,6 +23,7 @@
                     <th>Reason</th>
                     <th>Status</th>
                     <th>Processed By</th>
+                    <th>Review</th>
                     <th>Modify</th>
 
 
@@ -41,7 +42,18 @@
                     </td>
                     <td>
                         <c:if test="${r.processed_by ne null}">
-                            ${r.processed_by.name}, you can change it to
+                            ${r.processed_by.name} 
+                            
+                        </c:if>
+                        <c:if test="${r.processed_by eq null}">
+                            NULL
+                            
+                        </c:if>
+                        
+                    </td>
+                    <td>
+                        <c:if test="${r.processed_by ne null}">
+                            
                             <c:if test="${r.status eq 1}">
                                 <a href="review?id=${r.id}">Rejected</a>
                             </c:if>
@@ -66,5 +78,6 @@
                 </tr>
             </c:forEach>
         </table>
+        <jsp:include page="../util/pagger.jsp"></jsp:include>
     </body>
 </html>

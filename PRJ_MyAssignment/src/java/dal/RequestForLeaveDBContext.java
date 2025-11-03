@@ -247,6 +247,112 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    public ArrayList<RequestForLeave> list(int eid, int pageindex, int pagesize) {
+        ArrayList<RequestForLeave> rfls = new ArrayList<>();
+        try {
+            String sql = """
+            WITH Org AS (
+                SELECT *, 0 AS lvl FROM Employee e WHERE e.eid = ?
+                UNION ALL
+                SELECT c.*, o.lvl + 1 AS lvl 
+                FROM Employee c 
+                JOIN Org o ON c.supervisorid = o.eid
+            )
+            SELECT 
+                r.rid,
+                r.created_by,
+                e.ename AS created_name,
+                r.created_time,
+                r.[from],
+                r.[to],
+                r.reason,
+                r.status,
+                r.processed_by,
+                p.ename AS processed_name
+            FROM Org e
+            INNER JOIN RequestForLeave r ON e.eid = r.created_by
+            LEFT JOIN Employee p ON p.eid = r.processed_by
+            ORDER BY r.rid ASC
+            OFFSET (? - 1) * ? ROWS
+            FETCH NEXT ? ROWS ONLY;
+        """;
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, eid);
+            stm.setInt(2, pageindex);
+            stm.setInt(3, pagesize);
+            stm.setInt(4, pagesize);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                RequestForLeave rfl = new RequestForLeave();
+
+                Employee created_by = new Employee();
+                created_by.setId(rs.getInt("created_by"));
+                created_by.setName(rs.getString("created_name"));
+                rfl.setCreated_by(created_by);
+
+                rfl.setId(rs.getInt("rid"));
+                rfl.setCreated_time(rs.getTimestamp("created_time"));
+                rfl.setFrom(rs.getDate("from"));
+                rfl.setTo(rs.getDate("to"));
+                rfl.setReason(rs.getString("reason"));
+                rfl.setStatus(rs.getInt("status"));
+
+                int processed_by_id = rs.getInt("processed_by");
+                if (!rs.wasNull()) {
+                    Employee processed_by = new Employee();
+                    processed_by.setId(processed_by_id);
+                    processed_by.setName(rs.getString("processed_name"));
+                    rfl.setProcessed_by(processed_by);
+                }
+
+                rfls.add(rfl);
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        return rfls;
+    }
+
+    public int count(int eid) {
+        int total = -1;
+        try {
+            String sql = """
+            WITH Org AS (
+                SELECT *, 0 AS lvl FROM Employee e WHERE e.eid = ?
+                UNION ALL
+                SELECT c.*, o.lvl + 1 AS lvl 
+                FROM Employee c 
+                JOIN Org o ON c.supervisorid = o.eid
+            )
+            SELECT COUNT(*) AS total
+            FROM Org e
+            INNER JOIN RequestForLeave r ON e.eid = r.created_by;
+        """;
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, eid);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt("total");
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        return total;
+    }
+
     public HashMap<Integer, ArrayList<RequestForLeave>> getRequestsInRange(Date from, Date to) {
         HashMap<Integer, ArrayList<RequestForLeave>> map = new HashMap<>();
         try {

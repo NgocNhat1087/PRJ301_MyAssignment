@@ -1,2 +1,11 @@
 /PRJ_MyAssignment/nbproject/private/
 /PRJ_MyAssignment/build/
+CSD_TaxManager/nbproject/private/private.xml
+CSD_TaxManager/nbproject/private/private.properties
+CSD_TaxManager/build/classes/Utils.class
+CSD_TaxManager/build/classes/TaxPayer.class
+CSD_TaxManager/build/classes/Node.class
+CSD_TaxManager/build/classes/MyLinkedList.class
+CSD_TaxManager/build/classes/Main.class
+CSD_TaxManager/build/classes/.netbeans_update_resources
+CSD_TaxManager/build/classes/.netbeans_automatic_build
