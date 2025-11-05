@@ -244,7 +244,21 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
 
     @Override
     public void delete(RequestForLeave model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String sql = """
+            DELETE FROM [RequestForLeave]
+            WHERE [rid] = ?
+        """;
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, model.getId());
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+
     }
 
     public ArrayList<RequestForLeave> list(int eid, int pageindex, int pagesize) {
@@ -343,7 +357,6 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
                 total = rs.getInt("total");
             }
 
-            
         } catch (SQLException ex) {
             Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
