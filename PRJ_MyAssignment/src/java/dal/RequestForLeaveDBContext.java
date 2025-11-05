@@ -96,8 +96,10 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
                                ,[reason]
                                ,[status]
                                ,[processed_by]
+                               ,ye.ename AS processed_name
                            FROM [RequestForLeave] r
                            JOIN [Employee] e ON r.created_by = e.eid
+                           JOIN [Employee] ye ON r.processed_by = ye.eid
                            WHERE [rid] = ?""";
 
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -118,6 +120,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
                 rfl.setStatus(rs.getInt("status"));
                 Employee e = new Employee();
                 e.setId(rs.getInt("processed_by"));
+                e.setName(rs.getString("processed_name"));
 
                 rfl.setProcessed_by(e);
 
