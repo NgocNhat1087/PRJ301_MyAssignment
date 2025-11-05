@@ -25,13 +25,13 @@ public class AuthFilter implements Filter {
         }
 
         // 2️⃣ Kiểm tra đăng nhập (ví dụ ẩn URL home)
-        boolean loggedIn = (session != null && session.getAttribute("user") != null);
-        boolean isLoginRequest = uri.endsWith("/login") || uri.endsWith("/login.jsp");
-
-        if (!loggedIn && !isLoginRequest) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
+//        boolean loggedIn = (session != null && session.getAttribute("user") != null);
+//        boolean isLoginRequest = uri.endsWith("/login") || uri.endsWith("/login.jsp");
+//
+//        if (!loggedIn && !isLoginRequest) {
+//            response.sendRedirect(request.getContextPath() + "/login");
+//            return;
+//        }
 
         // 3️⃣ Cho phép request đi tiếp
         chain.doFilter(req, res);
