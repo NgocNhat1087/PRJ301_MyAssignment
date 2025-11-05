@@ -33,11 +33,13 @@ public class LoginController extends HttpServlet {
             session.setAttribute("auth", u);
             //print login successful!
             req.setAttribute("message", "Login Successful!");
-            resp.sendRedirect("index.html");
+            req.getRequestDispatcher("/home").forward(req, resp);
+            //resp.sendRedirect("/home");
         }
         else
         {
             req.setAttribute("message", "Login Failed!");
+            //resp.sendRedirect("/login");
             req.getRequestDispatcher("view/auth/message.jsp").forward(req, resp);
         }
         //req.getRequestDispatcher("view/auth/message.jsp").forward(req, resp);
