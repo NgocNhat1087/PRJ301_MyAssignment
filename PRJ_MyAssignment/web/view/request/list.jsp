@@ -1,12 +1,15 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
 <div class="container-fluid py-3 fade-in">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold page-title mb-0">
-            <i class="bi bi-journal-text me-2"></i> Leave Request List
+            <i class="bi bi-cpu me-2"></i> Leave Request Dashboard
         </h3>
         <a href="${pageContext.request.contextPath}/request/create"
            class="btn btn-accent px-3 py-2 shadow-sm">
@@ -43,16 +46,24 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${r.status eq 0}">
-                                        <span class="status-badge pending">Processing</span>
+                                        <span class="status-badge pending">
+                                            <i class="bi bi-cpu"></i> <span>Processing</span>
+                                        </span>
                                     </c:when>
                                     <c:when test="${r.status eq 1}">
-                                        <span class="status-badge approved">Approved</span>
+                                        <span class="status-badge approved">
+                                            <i class="bi bi-check-circle"></i> <span>Approved</span>
+                                        </span>
                                     </c:when>
                                     <c:when test="${r.status eq 2}">
-                                        <span class="status-badge rejected">Rejected</span>
+                                        <span class="status-badge rejected">
+                                            <i class="bi bi-x-octagon"></i> <span>Rejected</span>
+                                        </span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="status-badge unknown">Unknown</span>
+                                        <span class="status-badge unknown">
+                                            <i class="bi bi-question-circle"></i> <span>Unknown</span>
+                                        </span>
                                     </c:otherwise>
                                 </c:choose>
                             </td>
@@ -75,176 +86,307 @@
 </div>
 
 <script>
-function goReview(id) {
-    const row = event.currentTarget;
-    row.classList.add('active-row');
-    setTimeout(() => {
-        window.location.href = 'review?id=' + id;
-    }, 200);
-}
+    function goReview(id) {
+        const row = event.currentTarget;
+        row.classList.add('active-row');
+        setTimeout(() => window.location.href = 'review?id=' + id, 200);
+    }
 </script>
 
 <style>
-/* ===== COLOR SYSTEM ===== */
-:root {
-    --accent: #3b82f6;
-    --accent-hover: #2563eb;
-    --text-main: #1e1e1e;
-    --text-sub: #4b5563;
-    --bg-body: #f5f7fb;
-    --bg-card: #ffffff;
-    --bg-table-head: #f0f2f5;
-    --border: #e5e7eb;
-    --row-hover-bg: rgba(59,130,246,0.06);
-    --row-active: rgba(59,130,246,0.2);
-}
+    /* === BASE THEME COLORS === */
+    :root {
+        --accent: #00c3ff;
+        --accent2: #8b5cf6;
+        --text-main: #e2e8f0;
+        --text-sub: #94a3b8;
+        --bg-body: #0b0e17;
+        --bg-card: rgba(255,255,255,0.05);
+        --bg-table-head: linear-gradient(90deg, rgba(0,195,255,0.15), rgba(139,92,246,0.15));
+        --border: rgba(255,255,255,0.1);
+        --glow: 0 0 12px rgba(0,195,255,0.4);
+        --thead-text: #e5e7eb;
+    }
 
-[data-theme="dark"] {
-    --accent: #60a5fa;
-    --accent-hover: #3b82f6;
-    --text-main: #e5e7eb;
-    --text-sub: #9ca3af;
-    --bg-body: #121418;
-    --bg-card: #1d1f25;
-    --bg-table-head: #2a2d35;
-    --border: #2f3239;
-    --row-hover-bg: rgba(96,165,250,0.12);
-    --row-active: rgba(96,165,250,0.3);
-}
+    [data-theme="light"] {
+        --accent: #2563eb;
+        --accent2: #9333ea;
+        --text-main: #1e1e1e;
+        --text-sub: #4b5563;
+        --bg-body: #f7f9ff;
+        --bg-card: #ffffff;
+        --bg-table-head: linear-gradient(90deg, #e8ecff, #f3e8ff);
+        --border: #e5e7eb;
+        --glow: none;
+        --thead-text: #1e1e1e;
+    }
 
-/* ===== BASE ===== */
-body {
-    background: var(--bg-body);
-    color: var(--text-main);
-    font-family: "Inter", sans-serif;
-}
+    /* === BASE === */
+    body {
+        background: var(--bg-body);
+        color: var(--text-main);
+        font-family: "Poppins", sans-serif;
+        transition: background 0.4s ease, color 0.4s ease;
+    }
 
-.fade-in {
-    animation: fadeIn 0.4s ease;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+    .fade-in {
+        animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-/* ===== HEADER ===== */
-.page-title {
-    color: var(--text-main);
-    display: flex;
-    align-items: center;
-}
-.page-title i {
-    color: var(--accent);
-    font-size: 1.4rem;
-}
+    /* === HEADER === */
+    .page-title {
+        font-family: "Orbitron", sans-serif;
+        color: var(--accent);
+        letter-spacing: 0.6px;
+    }
+    .page-title i {
+        color: var(--accent2);
+        font-size: 1.4rem;
+        filter: drop-shadow(0 0 6px rgba(139,92,246,0.5));
+    }
 
-/* ===== BUTTONS ===== */
-.btn-accent {
-    background: var(--accent);
-    color: #fff;
-    border-radius: 10px;
-    border: none;
-    font-weight: 500;
-    transition: 0.25s ease;
-}
-.btn-accent:hover {
-    background: var(--accent-hover);
-    box-shadow: 0 3px 8px rgba(59,130,246,0.25);
-    transform: translateY(-1px);
-}
-.btn-outline-accent {
-    border-color: var(--accent);
-    color: var(--accent);
-    border-radius: 6px;
-    transition: all 0.25s ease;
-}
-.btn-outline-accent:hover {
-    background: var(--accent);
-    color: #fff;
-}
+    /* === BUTTONS === */
+    .btn-accent {
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-weight: 500;
+        box-shadow: var(--glow);
+        transition: all 0.3s ease;
+    }
+    .btn-accent:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 20px rgba(0,195,255,0.5);
+    }
+    .btn-outline-accent {
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        border-radius: 8px;
+        background: transparent;
+        transition: 0.3s;
+    }
+    .btn-outline-accent:hover {
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        color: #fff;
+    }
 
-/* ===== CARD ===== */
-.list-card {
-    background: var(--bg-card);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.04);
-}
+    /* === CARD === */
+    .list-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        box-shadow: 0 0 25px rgba(0,0,0,0.3);
+        backdrop-filter: blur(12px);
+        transition: all 0.3s ease;
+    }
+    .list-card:hover {
+        box-shadow: 0 0 30px rgba(0,195,255,0.25);
+    }
 
-/* ===== TABLE ===== */
-.table-container {
-    overflow-x: auto;
-    white-space: nowrap;
-}
-.modern-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-}
-.modern-table thead {
-    background: var(--bg-table-head);
-    color: var(--text-main);
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    font-weight: 600;
-}
-.modern-table th, .modern-table td {
-    border-color: var(--border);
-    padding: 8px 14px;
-    vertical-align: middle;
-    color: var(--text-sub);
-}
+    /* === TABLE === */
+    .table-container {
+        overflow-x: auto;
+        border-radius: 12px;
+    }
 
-/* ===== ROW EFFECT - hiện đại, không lệch ===== */
-.modern-table tbody tr {
-    cursor: pointer;
-    position: relative;
-    transition: background-color 0.25s ease, box-shadow 0.25s ease;
-}
+    .modern-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        color: var(--text-sub);
+        border-radius: 10px;
+        overflow: hidden;
+    }
 
-/* Hover sáng nhẹ nhưng KHÔNG thay đổi layout */
-.modern-table tbody tr:hover {
-    background-color: var(--row-hover-bg);
-    box-shadow: inset 3px 0 0 var(--accent), 0 1px 4px rgba(59,130,246,0.08);
-    transform: scale(1.003);
-    opacity: 0.8;
-}
+    /* Hàng tiêu đề đổi màu theo mode */
+    .modern-table thead {
+        background: var(--bg-table-head);
+        color: var(--thead-text);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: background 0.4s ease, color 0.4s ease;
+    }
 
-/* Click effect nhẹ */
-.modern-table tbody tr.active-row {
-    background-color: var(--row-active);
-    animation: rowFlash 0.6s ease-out;
-}
+    .modern-table th, .modern-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+    }
 
-@keyframes rowFlash {
-    0% { background-color: var(--row-active); }
-    100% { background-color: transparent; }
-}
-/* ===== STATUS BADGES ===== */
-.status-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-.status-badge.pending { background: #facc15; color: #1e1e1e; }
-.status-badge.approved { background: #22c55e; color: #fff; }
-.status-badge.rejected { background: #ef4444; color: #fff; }
-.status-badge.unknown { background: #9ca3af; color: #fff; }
+    .modern-table tbody tr {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .modern-table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(0,195,255,0.07), rgba(139,92,246,0.07));
+        box-shadow: inset 3px 0 0 var(--accent2), 0 0 10px rgba(0,195,255,0.8);
+        transform: scale(1.009);
+    }
+    .modern-table tbody tr.active-row {
+        background-color: rgba(139,92,246,0.25);
+        animation: flashRow 0.5s ease;
+    }
+    @keyframes flashRow {
+        0% {
+            background-color: rgba(139,92,246,0.25);
+        }
+        100% {
+            background-color: transparent;
+        }
+    }
 
-[data-theme="dark"] .status-badge.pending {
-    background: #eab308;
-    color: #111;
-}
+    /* === STATUS BADGES (AI + DUAL MODE) === */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 6px 14px;
+        /*border-radius: 20px;*/
+        font-size: 0.8rem;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        transition: all 0.4s ease;
+        box-shadow: 0 0 10px rgba(255,255,255,0.08);
+    }
+    .status-badge::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        /*border-radius: 25px;*/
+        background: linear-gradient(120deg, var(--accent), var(--accent2), var(--accent));
+        background-size: 200% 200%;
+        animation: statusGlow 3s linear infinite;
+        z-index: 0;
+        opacity: 0.6;
+    }
+    .status-badge::after {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        /*border-radius: 25px;*/
+        background: rgba(255,255,255,0.05);
+        z-index: 1;
+    }
+    .status-badge span, .status-badge i {
+        position: relative;
+        z-index: 2;
+    }
 
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width: 8px; height: 0; }
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 8px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
+    @keyframes statusGlow {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    /* Status variants */
+    .status-badge.pending::before {
+        background: linear-gradient(120deg, #38bdf8, #3b82f6, #0ea5e9);
+    }
+    .status-badge.pending::after {
+        background: rgba(59,130,246,0.1);
+    }
+    .status-badge.pending i {
+        color: #38bdf8;
+        animation: pulse 1.8s infinite;
+    }
+
+    .status-badge.approved::before {
+        background: linear-gradient(120deg, #22c55e, #16a34a, #4ade80);
+    }
+    .status-badge.approved::after {
+        background: rgba(34,197,94,0.12);
+    }
+    .status-badge.approved i {
+        color: #4ade80;
+    }
+
+    .status-badge.rejected::before {
+        background: linear-gradient(120deg, #ef4444, #dc2626, #f87171);
+    }
+    .status-badge.rejected::after {
+        background: rgba(239,68,68,0.12);
+    }
+    .status-badge.rejected i {
+        color: #f87171;
+    }
+
+    .status-badge.unknown::before {
+        background: linear-gradient(120deg, #64748b, #94a3b8, #64748b);
+    }
+    .status-badge.unknown::after {
+        background: rgba(100,116,139,0.12);
+    }
+    .status-badge.unknown i {
+        color: #a1a1aa;
+    }
+
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.7;
+            transform: scale(1.15);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Light mode overrides */
+    [data-theme="light"] .status-badge {
+        color: #1e1e1e;
+        text-shadow: none;
+    }
+    [data-theme="light"] .status-badge::after {
+        background: rgba(255,255,255,0.9);
+    }
+    [data-theme="light"] .status-badge.pending::before {
+        background: linear-gradient(120deg, #60a5fa, #93c5fd);
+    }
+    [data-theme="light"] .status-badge.approved::before {
+        background: linear-gradient(120deg, #86efac, #4ade80);
+    }
+    [data-theme="light"] .status-badge.rejected::before {
+        background: linear-gradient(120deg, #fca5a5, #f87171);
+    }
+    [data-theme="light"] .status-badge.unknown::before {
+        background: linear-gradient(120deg, #cbd5e1, #94a3b8);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--accent2);
+        border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+    }
 </style>
