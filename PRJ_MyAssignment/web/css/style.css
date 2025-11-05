@@ -1,44 +1,239 @@
-/*body {
+/* =========================
+   GLOBAL LAYOUT & RESET
+   ========================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f6f9;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
-/* Sidebar */
+/* =========================
+   SIDEBAR (FULL HEIGHT)
+   ========================= */
+.sidebar {
+    width: 250px;
+    background-color: #212529;
+    color: white;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    min-height: 100vh;      /* Chiều cao tối thiểu là viewport */
+    height: 100%;           /* Kéo dài theo nội dung */
+    overflow-y: auto;       /* Cuộn khi dài hơn */
+    flex-shrink: 0;
+    z-index: 1040;
+}
+
+/* Avatar / user info */
+.sidebar .text-center p {
+    font-weight: 600;
+}
+
+.sidebar .text-success {
+    color: #28a745 !important;
+}
+
+/* Sidebar links */
 .sidebar .nav-link {
     font-size: 15px;
     padding: 8px 12px;
     border-radius: 6px;
     margin-bottom: 4px;
     transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    text-decoration: none;
 }
+
+.sidebar .nav-link i {
+    font-size: 1rem;
+}
+
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
     background-color: #0d6efd;
     color: #fff !important;
 }
 
-/* Cards (dùng cho dashboard home) */
+/* Scrollbar tuỳ chỉnh cho sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* =========================
+   PAGE WRAPPER (PHẦN NỘI DUNG)
+   ========================= */
+.page-wrapper {
+    margin-left: 250px;  /* Đẩy sang phải để tránh sidebar */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   NAVBAR
+   ========================= */
+.navbar {
+    height: 56px;
+    background-color: #0d6efd !important;
+    z-index: 1030;
+}
+
+.navbar .navbar-brand {
+    font-weight: 600;
+    color: #fff;
+}
+
+.navbar .navbar-brand:hover {
+    color: #eaeaea;
+}
+
+/* =========================
+   MAIN CONTENT
+   ========================= */
+main {
+    flex-grow: 1;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+}
+
+/* =========================
+   CARDS (Trang chủ Dashboard)
+   ========================= */
 .card-stat {
     border: none;
     border-radius: 10px;
     padding: 20px;
     color: #fff;
     transition: transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
 .card-stat:hover {
     transform: translateY(-5px);
 }
+
 .card-stat .icon {
     font-size: 40px;
-    opacity: 0.3;
+    opacity: 0.25;
     position: absolute;
     right: 20px;
     top: 20px;
 }
 
-/* Footer */
-footer {
-    font-size: 0.9rem;
+/* Màu riêng cho từng loại card */
+.bg-info    { background-color: #0dcaf0 !important; }
+.bg-warning { background-color: #ffc107 !important; }
+.bg-success { background-color: #198754 !important; }
+.bg-danger  { background-color: #dc3545 !important; }
+
+/* =========================
+   TABLES (cho trang list)
+   ========================= */
+.table {
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
+.table thead {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f2f6ff;
+}
+
+/* Status badge */
+.badge-success {
+    background-color: #198754 !important;
+}
+
+.badge-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge-warning {
+    background-color: #ffc107 !important;
+    color: #212529;
+}
+
+/* =========================
+   PAGINATION
+   ========================= */
+.pagination-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination-container button {
+    background-color: #0d6efd;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin: 0 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.pagination-container button:hover {
+    background-color: #0b5ed7;
+}
+
+.pagination-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+footer {
+    font-size: 0.9rem;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+}
+
+/* =========================
+   UTILITIES (tiện ích thêm)
+   ========================= */
+.text-primary {
+    color: #0d6efd !important;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
