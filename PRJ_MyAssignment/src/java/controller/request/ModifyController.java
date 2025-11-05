@@ -23,7 +23,6 @@ public class ModifyController extends BaseRequiredAuthorizationController {
         int id = Integer.parseInt(req.getParameter("id"));
         RequestForLeaveDBContext db = new RequestForLeaveDBContext();
         RequestForLeave r = new RequestForLeave();
-        
 
 //        //  Chỉ cho phép người tạo đơn sửa chính đơn của mình, và đơn còn processing
 //        boolean isOwner = r.getCreated_by().getId() == (user.getEmployee().getId());
@@ -39,7 +38,7 @@ public class ModifyController extends BaseRequiredAuthorizationController {
         r.setTo(Date.valueOf(req.getParameter("to")));
         r.setReason(req.getParameter("reason"));
         r.setId(id);
-        
+
         db.update(r);
 
         resp.sendRedirect("list");
@@ -61,9 +60,12 @@ public class ModifyController extends BaseRequiredAuthorizationController {
 //                    "You are not allowed to modify this request.");
 //            return;
 //        }
-
         req.setAttribute("r", r);
-        req.getRequestDispatcher("../view/request/modify.jsp").forward(req, resp);
+        req.setAttribute("pageTitle", "Modify Request");
+        req.setAttribute("contentPage", "../request/modify.jsp");
+        req.getRequestDispatcher("/view/util/layout.jsp").forward(req, resp);
+
+        //req.getRequestDispatcher("../view/request/modify.jsp").forward(req, resp);
     }
 
 }
