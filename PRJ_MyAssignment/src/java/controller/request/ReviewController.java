@@ -31,8 +31,7 @@ public class ReviewController extends BaseRequiredAuthorizationController {
         Employee reviewer = user.getEmployee();
         RequestForLeaveDBContext db = new RequestForLeaveDBContext();
         if (action.equals("approve")) {
-            status = 1;
-            
+            status = 1;   
         } else if (action.equals("reject")) {
             status = 2;
         }
