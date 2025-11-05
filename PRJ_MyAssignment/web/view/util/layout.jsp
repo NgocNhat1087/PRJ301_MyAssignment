@@ -160,7 +160,7 @@
         }
 
         .card:hover {
-            transform: translateY(-3px);
+            /*transform: translateY(-3px);*/
             box-shadow: 0 10px 25px var(--shadow);
         }
 
