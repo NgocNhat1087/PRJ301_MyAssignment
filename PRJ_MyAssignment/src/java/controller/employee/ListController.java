@@ -1,28 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package controller.employee;
 
 import controller.iam.BaseRequiredAuthorizationController;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import dal.EmployeeDBContext;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import model.Employee;
 import model.iam.User;
 
-@WebServlet(urlPatterns = "/employee/list")
-public class ListController extends BaseRequiredAuthorizationController{
+@WebServlet("/employee/list")
+public class ListController extends BaseRequiredAuthorizationController {
 
+   
     @Override
     protected void processPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        processGet(req,resp, user); 
+
     }
 
     @Override
     protected void processGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+          EmployeeDBContext db = new EmployeeDBContext();
+        ArrayList<Employee> employees = db.list();
 
+        req.setAttribute("employees", employees);
+        req.setAttribute("pageTitle", "Employee Management");
+        req.setAttribute("contentPage", "/view/employee/list.jsp");
+        req.getRequestDispatcher("/view/util/layout.jsp").forward(req, resp);
     }
-
 }

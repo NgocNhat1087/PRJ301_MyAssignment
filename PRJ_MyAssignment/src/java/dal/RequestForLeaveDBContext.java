@@ -87,20 +87,20 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
     public RequestForLeave get(int id) {
         try {
             String sql = """
-                         SELECT [rid]
-                               ,[created_by]
-                               ,e.ename AS [created_name]
-                               ,[created_time]
-                               ,[from]
-                               ,[to]
-                               ,[reason]
-                               ,[status]
-                               ,[processed_by]
-                               ,ye.ename AS processed_name
-                           FROM [RequestForLeave] r
-                           JOIN [Employee] e ON r.created_by = e.eid
-                           JOIN [Employee] ye ON r.processed_by = ye.eid
-                           WHERE [rid] = ?""";
+                          SELECT r.[rid],
+                                            r.[created_by],
+                                            e.[ename] AS [created_name],
+                                            r.[created_time],
+                                            r.[from],
+                                            r.[to],
+                                            r.[reason],
+                                            r.[status],
+                                            r.[processed_by],
+                                            ye.[ename] AS [processed_name]
+                                     FROM [RequestForLeave] r
+                                     LEFT JOIN [Employee] e ON r.created_by = e.eid
+                                     LEFT JOIN [Employee] ye ON r.processed_by = ye.eid
+                                     WHERE r.[rid] = ?""";
 
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);

@@ -4,7 +4,6 @@
  */
 package controller.division;
 
-
 import controller.iam.BaseRequiredAuthorizationController;
 import dal.EmployeeDBContext;
 import dal.RequestForLeaveDBContext;
@@ -34,16 +33,16 @@ public class ViewAgendaController extends BaseRequiredAuthorizationController {
 
     @Override
     protected void processGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-        
+
         String from_raw = req.getParameter("from");
         String to_raw = req.getParameter("to");
 
         // Nếu chưa chọn thì dùng mặc định
         Date from = (from_raw == null || from_raw.isEmpty())
-                ? Date.valueOf("2025-01-01")
+                ? Date.valueOf("2025-11-3")
                 : Date.valueOf(from_raw);
         Date to = (to_raw == null || to_raw.isEmpty())
-                ? Date.valueOf("2025-01-09")
+                ? Date.valueOf("2025-11-9")
                 : Date.valueOf(to_raw);
 
         EmployeeDBContext dbEmp = new EmployeeDBContext();
@@ -56,10 +55,11 @@ public class ViewAgendaController extends BaseRequiredAuthorizationController {
         req.setAttribute("to", to);
         req.setAttribute("employees", employees);
         req.setAttribute("map", map);
+        req.setAttribute("pageTitle", "Division Agenda");
+        req.setAttribute("contentPage", "../division/agenda.jsp");
+        req.getRequestDispatcher("/view/util/layout.jsp").forward(req, resp);
 
-        req.getRequestDispatcher("../view/division/agenda.jsp").forward(req, resp);
+        //req.getRequestDispatcher("../view/division/agenda.jsp").forward(req, resp);
     }
 
-    }
-    
-
+}

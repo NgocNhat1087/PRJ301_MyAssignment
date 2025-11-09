@@ -24,16 +24,7 @@ public class ModifyController extends BaseRequiredAuthorizationController {
         RequestForLeaveDBContext db = new RequestForLeaveDBContext();
         RequestForLeave r = new RequestForLeave();
 
-//        //  Chỉ cho phép người tạo đơn sửa chính đơn của mình, và đơn còn processing
-//        boolean isOwner = r.getCreated_by().getId() == (user.getEmployee().getId());
-//        boolean isPending = r.getStatus() == 0;
-//        boolean notProcessed = (r.getProcessed_by() == null);
-//
-//        if (!(isOwner && isPending && notProcessed)) {
-//            resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-//                    "You are not allowed to modify this request.");
-//            return;
-//        }
+
         r.setFrom(Date.valueOf(req.getParameter("from")));
         r.setTo(Date.valueOf(req.getParameter("to")));
         r.setReason(req.getParameter("reason"));
@@ -50,22 +41,13 @@ public class ModifyController extends BaseRequiredAuthorizationController {
         RequestForLeaveDBContext db = new RequestForLeaveDBContext();
         RequestForLeave r = db.get(id);
 
-        //  Chỉ cho phép người tạo đơn sửa chính đơn của mình, và đơn còn processing
-//        boolean isOwner = r.getCreated_by().getId() == (user.getEmployee().getId());
-//        boolean isPending = r.getStatus() == 0;
-//        
-//
-//        if (!(isOwner && isPending)) {
-//            resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-//                    "You are not allowed to modify this request.");
-//            return;
-//        }
+      
         req.setAttribute("r", r);
         req.setAttribute("pageTitle", "Modify Request");
         req.setAttribute("contentPage", "../request/modify.jsp");
         req.getRequestDispatcher("/view/util/layout.jsp").forward(req, resp);
 
-        //req.getRequestDispatcher("../view/request/modify.jsp").forward(req, resp);
+       
     }
 
 }

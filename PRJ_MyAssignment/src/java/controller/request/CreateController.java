@@ -14,6 +14,7 @@ import java.io.IOException;
 import model.RequestForLeave;
 import model.iam.User;
 import java.sql.Date;
+
 /**
  *
  * @author sonnt
@@ -29,15 +30,22 @@ public class CreateController extends BaseRequiredAuthorizationController {
         rfl.setTo(Date.valueOf(req.getParameter("to")));
         rfl.setReason(req.getParameter("reason"));
         rfl.setCreated_by(user.getEmployee());
-        
+
         db.insert(rfl);
-        req.setAttribute("msg", "Create Success");
-        req.getRequestDispatcher("../view/request/create.jsp").forward(req, resp);
+        req.setAttribute("msg", "Request created successfully!");
+        req.setAttribute("pageTitle", "Create Leave Request");
+        req.setAttribute("contentPage", "../request/create.jsp");
+        req.getRequestDispatcher("/view/util/layout.jsp").forward(req, resp);
+        //req.getRequestDispatcher("../view/request/create.jsp").forward(req, resp);
+        
     }
 
     @Override
     protected void processGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-        req.getRequestDispatcher("../view/request/create.jsp").forward(req, resp);
+        req.setAttribute("pageTitle", "Create Leave Request");
+        req.setAttribute("contentPage", "../request/create.jsp");
+        req.getRequestDispatcher("/view/util/layout.jsp").forward(req, resp);
+        //req.getRequestDispatcher("../view/request/create.jsp").forward(req, resp);
     }
-    
+
 }

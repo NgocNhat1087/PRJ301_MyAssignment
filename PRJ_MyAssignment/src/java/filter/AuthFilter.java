@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-@WebFilter("/*") // áp dụng cho tất cả request
+@WebFilter("/*") 
 public class AuthFilter implements Filter {
 
     @Override
@@ -18,22 +18,14 @@ public class AuthFilter implements Filter {
         String uri = request.getRequestURI();
         HttpSession session = request.getSession(false);
 
-        // ️⃣ Chặn truy cập trực tiếp .jsp
+        // Chặn truy cập trực tiếp .jsp
         if (uri.endsWith(".jsp")) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        // 2️⃣ Kiểm tra đăng nhập (ví dụ ẩn URL home)
-//        boolean loggedIn = (session != null && session.getAttribute("user") != null);
-//        boolean isLoginRequest = uri.endsWith("/login") || uri.endsWith("/login.jsp");
-//
-//        if (!loggedIn && !isLoginRequest) {
-//            response.sendRedirect(request.getContextPath() + "/login");
-//            return;
-//        }
 
-        // 3️⃣ Cho phép request đi tiếp
+        //  Cho phép request đi tiếp
         chain.doFilter(req, res);
     }
 

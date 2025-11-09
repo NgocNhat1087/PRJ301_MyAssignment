@@ -9,7 +9,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold page-title mb-0">
-            <i class="bi bi-cpu me-2"></i> Leave Request Dashboard
+            <i class="bi bi-cpu me-2"></i> Leave Request List
         </h3>
         <a href="${pageContext.request.contextPath}/request/create"
            class="btn btn-accent px-3 py-2 shadow-sm">
@@ -31,7 +31,7 @@
                         <th>Reason</th>
                         <th>Status</th>
                         <th>Processed By</th>
-                        <th>Action</th>
+                        <th>View</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -389,4 +389,11 @@
     ::-webkit-scrollbar-thumb:hover {
         background: var(--accent);
     }
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+    }
+
 </style>
