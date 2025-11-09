@@ -5,6 +5,7 @@
 
 package controller.iam;
 
+import dal.RoleDBContext;
 import dal.UserDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,11 +23,12 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        
+        RoleDBContext roleDB = new RoleDBContext();
         //validation (santinization)
         
         UserDBContext db = new UserDBContext();
         User u = db.get(username, password);
+        u.setRoles(roleDB.getByUserId(u.getId())); 
         if(u!=null)
         {
             HttpSession session = req.getSession();

@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -183,7 +185,7 @@
                 background: var(--accent);
                 border-radius: 8px;
             }
-            
+
         </style>
     </head>
 
@@ -196,13 +198,61 @@
                 </div>
 
                 <ul class="nav flex-column">
-                    <li><a href="${pageContext.request.contextPath}/home" class="nav-link"><i class="bi bi-cpu"></i> Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/employee/list" class="nav-link"><i class="bi bi-person-badge"></i> Employees</a></li>
-                    <li><a href="${pageContext.request.contextPath}/department/list" class="nav-link"><i class="bi bi-diagram-3"></i> Departments</a></li>
-                    <li><a href="${pageContext.request.contextPath}/division/agenda" class="nav-link"><i class="bi bi-calendar-event"></i> Work Schedule</a></li>
-                    <li><a href="${pageContext.request.contextPath}/request/list" class="nav-link"><i class="bi bi-robot"></i> Leave Requests</a></li>
-                    <li><a href="${pageContext.request.contextPath}/request/create" class="nav-link"><i class="bi bi-plus-circle"></i> New Request</a></li>
+
+                    <!-- ===== Tạo các biến kiểm tra quyền ===== -->
+                    <c:set var="isAdmin" value="false"/>
+                    <c:set var="isManager" value="false"/>
+                    <c:set var="isEmployee" value="false"/>
+
+                    <c:forEach var="r" items="${sessionScope.auth.roles}">
+                        <c:if test="${r.id eq 1}">
+                            <c:set var="isAdmin" value="true"/>
+                        </c:if>
+                        <c:if test="${r.id eq 2}">
+                            <c:set var="isManager" value="true"/>
+                        </c:if>
+                        <c:if test="${r.id eq 3}">
+                            <c:set var="isEmployee" value="true"/>
+                        </c:if>
+                    </c:forEach>
+
+                    <!-- ===== Home (mọi người đều có) ===== -->
+                    <li>
+                        <a href="${pageContext.request.contextPath}/home" class="nav-link">
+                            <i class="bi bi-cpu"></i> Home
+                        </a>
+                    </li>
+
+                    <!-- ===== ADMIN ===== -->
+                    <c:if test="${isAdmin}">
+                        <li><a href="${pageContext.request.contextPath}/employee/list" class="nav-link"><i class="bi bi-person-badge"></i> Employees</a></li>
+                        <li><a href="${pageContext.request.contextPath}/department/list" class="nav-link"><i class="bi bi-diagram-3"></i> Departments</a></li>
+                        <li><a href="${pageContext.request.contextPath}/division/agenda" class="nav-link"><i class="bi bi-calendar-event"></i> Work Schedule</a></li>
+                        <li><a href="${pageContext.request.contextPath}/request/list" class="nav-link"><i class="bi bi-robot"></i> Leave Requests</a></li>
+                        <li><a href="${pageContext.request.contextPath}/request/create" class="nav-link"><i class="bi bi-plus-circle"></i> New Request</a></li>
+                        </c:if>
+
+                    <!-- ===== MANAGER ===== -->
+                    <c:if test="${isManager}">
+                        <li><a href="${pageContext.request.contextPath}/department/list" class="nav-link"><i class="bi bi-diagram-3"></i> Departments</a></li>
+
+                        <li><a href="${pageContext.request.contextPath}/division/agenda" class="nav-link"><i class="bi bi-calendar-event"></i> Work Schedule</a></li>
+                        <li><a href="${pageContext.request.contextPath}/request/list" class="nav-link"><i class="bi bi-robot"></i> Review Requests</a></li>
+                        <li><a href="${pageContext.request.contextPath}/request/create" class="nav-link"><i class="bi bi-plus-circle"></i> New Request</a></li>
+
+                    </c:if>
+
+                    <!-- ===== EMPLOYEE ===== -->
+                    <c:if test="${isEmployee}">
+                        <li><a href="${pageContext.request.contextPath}/department/list" class="nav-link"><i class="bi bi-diagram-3"></i> Departments</a></li>
+
+                        <li><a href="${pageContext.request.contextPath}/request/list" class="nav-link"><i class="bi bi-robot"></i> My Requests</a></li>
+                        <li><a href="${pageContext.request.contextPath}/request/create" class="nav-link"><i class="bi bi-plus-circle"></i> New Request</a></li>
+                        </c:if>
+
                 </ul>
+
+
             </div>
 
             <a href="${pageContext.request.contextPath}/logout" class="nav-link text-danger mt-3"><i class="bi bi-box-arrow-right"></i> Logout</a>
